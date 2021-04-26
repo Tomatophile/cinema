@@ -8,10 +8,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import ru.neoflex.cinema.domain.Film;
 import ru.neoflex.cinema.repos.FilmRepo;
+import ru.neoflex.cinema.repos.GenreRepo;
 
 import java.util.Comparator;
 import java.util.List;
-import java.util.TreeSet;
 
 import static ru.neoflex.cinema.constants.FilmComparators.*;
 
@@ -20,6 +20,8 @@ import static ru.neoflex.cinema.constants.FilmComparators.*;
 public class LibraryPageController {
     @Autowired
     private FilmRepo filmRepo;
+    @Autowired
+    private GenreRepo genreRepo;
 
     @GetMapping
     public String viewLibraryPage(
@@ -27,11 +29,10 @@ public class LibraryPageController {
             @RequestParam(required = false) String contains,
             @RequestParam(required = false) String sort,
             Model model) {
-        Comparator<Film> comparator = sortFilms(sort);
         List<Film> films = filterFilms(contains, selectedGenre);
         films.sort(sortFilms(sort));
 
-        model.addAttribute("genres", filmRepo.findDistinctGenre());
+        model.addAttribute("genres", genreRepo.findAll());
         model.addAttribute("selectedGenre", selectedGenre);
         model.addAttribute("contains", contains);
         model.addAttribute("sort", sort);
@@ -57,7 +58,7 @@ public class LibraryPageController {
 
     private List<Film> filterFilms(String contains, String selectedGenre) {
         if (contains != null && !contains.isEmpty() && !contains.matches("[ ]*") && selectedGenre != null && !selectedGenre.isEmpty() && !selectedGenre.equals("--")) {
-            return filmRepo.findAllByNameContainsAndGenre(contains, selectedGenre);
+            return filmRepo.findAllByNameContainsAndGenres_Name(contains, selectedGenre);
         } else if (contains != null && !contains.isEmpty() && !contains.matches("[ ]*")) {
             return filmRepo.findAllByNameContains(contains);
         } else if (selectedGenre != null && !selectedGenre.isEmpty() && !selectedGenre.equals("--")){

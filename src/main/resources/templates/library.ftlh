@@ -10,7 +10,7 @@
                 <select name="selectedGenre" id="genre">
                     <option <#if !selectedGenre??>selected</#if>>--</option>
                     <#list genres as genre>
-                        <option <#if selectedGenre?? && selectedGenre=='${genre}'>selected</#if> value="${genre}">${genre}</option>
+                        <option <#if selectedGenre?? && selectedGenre=='${genre.getName()}'>selected</#if> value="${genre.getName()}">${genre.getName()}</option>
                     </#list>
                 </select>
             </p>
@@ -35,7 +35,7 @@
         </tr>
         <#list films as film>
             <tr>
-                <td>${film.getGenre()}</td>
+                <td><#list film.getGenres() as genre>${genre.getName()}</#list></td>
                 <td><a href="/films/${film.getId()}">${film.getName()}</a></td>
                 <td>${film.getYear()}</td>
                 <td>${film.getRating()}</td>

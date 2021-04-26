@@ -5,7 +5,7 @@
     <br>
     Year: ${film.getYear()}
     <br>
-    Genre: ${film.getGenre()}
+    Genre:
     <br>
     Rating: ${film.getRating()}
     <br>
