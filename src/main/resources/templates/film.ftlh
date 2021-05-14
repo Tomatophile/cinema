@@ -1,14 +1,9 @@
 <#import "parts/common.ftlh" as c>
 
 <@c.html>
-<strong>${film.getName()}</strong>
-    <br>
-    Year: ${film.getYear()}
-    <br>
-    Genre:
-    <br>
-    Rating: ${film.getRating()}
-    <br>
-    <br>
-    <a href="/films">Library</a>
+    <div class="container-fluid">
+            <img src="${film.getImgUrl()}" class="img-thumbnail ms-4 mt-2" alt="${film.getName()}" width="600"
+                 height="900">
+
+    </div>
 </@c.html>

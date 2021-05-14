@@ -1,16 +1,14 @@
-<#import "parts/common.ftlh" as c>
 <#import "parts/form.ftlh" as form>
-<#import "parts/displayFilms.ftlh" as disp>
+<#import "parts/common.ftlh" as c>
 
 <@c.html>
-    <div class="container mb-3">
+    <div class="container mt-5">
         <div class="row">
             <div class="col"></div>
             <div class="col">
-                <@form.filter/>
+                <@form.login "/login"/>
             </div>
             <div class="col"></div>
         </div>
     </div>
-    <@disp.cards 0/>
 </@c.html>

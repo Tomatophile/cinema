@@ -1,11 +1,13 @@
 package ru.neoflex.cinema.domain;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.List;
 
 @Entity
-public class Film {
+public class Film implements Serializable {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
     @Column(name = "film_name")
@@ -24,18 +26,23 @@ public class Film {
     private int rentPrice;
     @Column(name = "film_country")
     private String country;
+    @Column(name = "film_img_ref")
+    private String imgUrl;
 
-    @ManyToMany(fetch = FetchType.EAGER)
+    @ManyToMany(cascade = CascadeType.REMOVE)
     @JoinTable(name = "film_genre",
             joinColumns = @JoinColumn(name = "film_id"),
             inverseJoinColumns = @JoinColumn(name = "genre_id"))
     private List<Genre> genres;
-    @ManyToMany(fetch = FetchType.EAGER)
+    @ManyToMany(cascade = CascadeType.REMOVE)
     @JoinTable(name = "film_actor",
             joinColumns = @JoinColumn(name = "film_id"),
             inverseJoinColumns = @JoinColumn(name = "actor_id"))
     private List<Actor> actors;
 
+    public String getStringYear(){
+        return String.valueOf(year);
+    }
 
     public int getId() {
         return id;
@@ -123,5 +130,13 @@ public class Film {
 
     public void setActors(List<Actor> filmActors) {
         this.actors = filmActors;
+    }
+
+    public String getImgUrl() {
+        return imgUrl;
+    }
+
+    public void setImgUrl(String imgUrl) {
+        this.imgUrl = imgUrl;
     }
 }
