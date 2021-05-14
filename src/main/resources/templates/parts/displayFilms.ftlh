@@ -46,6 +46,19 @@
                 </div>
                 <#assign count = count + 1>
                 <#if count = max><#break></#if>
+                <#else>
+                    <div class="card bg-dark text-white text-end" style="width: 16rem;">
+                        <img src="..." class="card-img-top" alt="Empty">
+                        <div class="mask img-gradient"></div>
+                        <div class="card-img-overlay d-flex flex-column">
+                            <div class="mt-auto">
+                                <h5 class="card-title">Empty</h5>
+                                <p class="card-text">
+                                    Empty
+                                </p>
+                            </div>
+                        </div>
+                    </div>
             </#list>
         </div>
     </div>
