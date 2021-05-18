@@ -8,16 +8,12 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import ru.neoflex.cinema.domain.BoughtFilm;
-import ru.neoflex.cinema.domain.Film;
-import ru.neoflex.cinema.domain.RentedFilm;
-import ru.neoflex.cinema.domain.User;
+import ru.neoflex.cinema.domain.*;
 import ru.neoflex.cinema.domain.composite.UserAndFilmCompositeId;
-import ru.neoflex.cinema.repos.BoughtFilmRepo;
-import ru.neoflex.cinema.repos.FilmRepo;
-import ru.neoflex.cinema.repos.RentedFilmRepo;
+import ru.neoflex.cinema.repos.*;
 
 import java.time.LocalDateTime;
+import java.util.Collections;
 
 @Controller
 public class PaymentPageController {
@@ -27,6 +23,10 @@ public class PaymentPageController {
     private BoughtFilmRepo boughtFilmRepo;
     @Autowired
     private RentedFilmRepo rentedFilmRepo;
+    @Autowired
+    private CardRepo cardRepo;
+    @Autowired
+    private VoucherRepo voucherRepo;
 
     @GetMapping("/films/{id}/buy")
     public String viewBuyPage(@PathVariable int id, Model model){
@@ -38,13 +38,16 @@ public class PaymentPageController {
     public String buyFilm(
             @PathVariable int id,
             @AuthenticationPrincipal User user,
-            @RequestParam int quality){
+            @RequestParam int quality,
+            @RequestParam Card card){
         BoughtFilm boughtFilm = new BoughtFilm();
         Film film = filmRepo.getOne(id);
         boughtFilm.setId(new UserAndFilmCompositeId(user.getId(), film.getId()));
         boughtFilm.setFilm(film);
         boughtFilm.setQuality(quality);
         boughtFilm.setUser(user);
+
+        newVoucher(card, film, "Покупка");
 
         boughtFilmRepo.save(boughtFilm);
 
@@ -61,7 +64,8 @@ public class PaymentPageController {
     public String rentFilm(
             @PathVariable int id,
             @AuthenticationPrincipal User user,
-            @RequestParam int quality){
+            @RequestParam int quality,
+            @RequestParam Card card){
         RentedFilm rentedFilm = new RentedFilm();
         Film film = filmRepo.getOne(id);
         rentedFilm.setId(new UserAndFilmCompositeId(user.getId(), film.getId()));
@@ -71,8 +75,36 @@ public class PaymentPageController {
         rentedFilm.setQuality(quality);
         rentedFilm.setUser(user);
 
+        newVoucher(card, film, "Аренда");
+
         rentedFilmRepo.save(rentedFilm);
 
         return "redirect:/profile/own/rented";
+    }
+
+    @GetMapping("/profile/card/new")
+    public String newCardForm(){
+        return "newCard";
+    }
+
+    @PostMapping("/profile/card/new")
+    public String newCardAdd(Card card, @AuthenticationPrincipal User user){
+        Card cardFromDB = cardRepo.findByNumber(card.getNumber());
+        if(cardFromDB==null){
+            card.setUser(user);
+        }
+
+        cardRepo.save(card);
+
+        return "redirect:/profile";
+    }
+
+    private void newVoucher(Card card, Film film, String type){
+        Voucher voucher = new Voucher();
+        voucher.setFilm(film);
+        voucher.setPaymentType(type);
+        voucher.setCard(card);
+
+        voucherRepo.save(voucher);
     }
 }

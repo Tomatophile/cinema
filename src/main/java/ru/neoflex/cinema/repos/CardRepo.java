@@ -4,4 +4,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import ru.neoflex.cinema.domain.Card;
 
 public interface CardRepo extends JpaRepository<Card, Integer> {
+    Card findByNumber(String number);
 }
