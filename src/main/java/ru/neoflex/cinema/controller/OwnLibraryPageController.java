@@ -12,6 +12,7 @@ import ru.neoflex.cinema.domain.User;
 import ru.neoflex.cinema.repos.BoughtFilmRepo;
 import ru.neoflex.cinema.repos.RentedFilmRepo;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Controller
@@ -31,6 +32,7 @@ public class OwnLibraryPageController {
 
     @GetMapping("/rented")
     public String viewRentedPage(@AuthenticationPrincipal User user, Model model){
+        rentedFilmRepo.deleteByEndDateBefore(LocalDateTime.now());
         List<RentedFilm> rentedFilms = rentedFilmRepo.findAllById_UserId(user.getId());
         model.addAttribute("rentedFilms", rentedFilms);
         return "/rented";

@@ -4,9 +4,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import ru.neoflex.cinema.domain.Film;
+import ru.neoflex.cinema.repos.ActorRepo;
 import ru.neoflex.cinema.repos.FilmRepo;
 import ru.neoflex.cinema.repos.GenreRepo;
 
@@ -22,6 +24,8 @@ public class LibraryPageController {
     private FilmRepo filmRepo;
     @Autowired
     private GenreRepo genreRepo;
+    @Autowired
+    private ActorRepo actorRepo;
 
     @GetMapping
     public String viewLibraryPage(
@@ -33,6 +37,7 @@ public class LibraryPageController {
         films.sort(sortFilms(sort));
 
         model.addAttribute("genres", genreRepo.findAll());
+        model.addAttribute("actors", actorRepo.findAll());
         model.addAttribute("selectedGenre", selectedGenre);
         model.addAttribute("contains", contains);
         model.addAttribute("sort", sort);

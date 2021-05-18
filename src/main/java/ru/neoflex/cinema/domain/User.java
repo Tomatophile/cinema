@@ -34,6 +34,15 @@ public class User implements UserDetails {
             inverseJoinColumns = @JoinColumn(name = "role_id"))
     private Set<Role> roles;
 
+    public boolean isAdmin(){
+        for(Role role: roles){
+            if(role.getAuthority().equals("ROLE_ADMIN")){
+                return true;
+            }
+        }
+        return false;
+    }
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return getRoles();

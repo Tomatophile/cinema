@@ -58,6 +58,8 @@
     </form>
 </#macro>
 
+<#include "security.ftlh">
+
 <#macro filter>
     <div class="container text-white">
         <form action="/films" method="get">
@@ -88,7 +90,104 @@
                 <div class="col">
                     <button type="submit" class="btn btn-outline-primary btn-sm">Поиск</button>
                 </div>
+                <#--<#if known>
+                    <#if isAdmin>
+                        <div class="col">
+                            <button type="button" class="btn btn-light text-dark btn-sm" data-bs-toggle="modal"
+                                    data-bs-target="#addModal">
+                                Add
+                            </button>
+                        </div>
+                    </#if>
+                </#if>-->
             </div>
         </form>
     </div>
+<#--<div class="modal fade" id="addModal" tabindex="-1" aria-labelledby="addModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="addModalLabel">Добавить фильм</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form action="/films" method="post">
+                <div class="modal-body">
+                    <input type="hidden" name="_csrf" value="${_csrf.token}">
+                    <div class="mb-3">
+                        <label for="name" class="form-label">Название</label>
+                        <input type="text" class="form-control" id="name" name="name">
+                    </div>
+                    <div class="mb-3">
+                        <label for="year" class="form-label">Год выхода</label>
+                        <input type="number" class="form-control" id="year" name="year">
+                    </div>
+                    <div class="mb-3">
+                        <label for="ageLimit" class="form-label">Возрастное ограничение</label>
+                        <input type="number" class="form-control" id="ageLimit" name="ageLimit">
+                    </div>
+                    <div class="mb-3">
+                        <label for="description" class="form-label">Описание</label>
+                        <input type="text" class="form-control" id="description" name="description">
+                    </div>
+                    <div class="mb-3">
+                        <label for="rating" class="form-label">Рейтинг</label>
+                        <input type="number" class="form-control" id="rating" name="rating">
+                    </div>
+                    <div class="mb-3">
+                        <label for="buyPrice" class="form-label">Стоимость покупки</label>
+                        <input type="number" class="form-control" id="buyPrice" name="buyPrice">
+                    </div>
+                    <div class="mb-3">
+                        <label for="rentPrice" class="form-label">Стоимость аренды</label>
+                        <input type="number" class="form-control" id="rentPrice" name="rentPrice">
+                    </div>
+                    <div class="mb-3">
+                        <label for="country" class="form-label">Страна</label>
+                        <input type="text" class="form-control" id="country" name="country">
+                    </div>
+                    <div class="mb-3">
+                        <label for="imgUrl" class="form-label">Ссылка на изображение</label>
+                        <input type="text" class="form-control" id="imgUrl" name="imgUrl">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-primary" data-bs-dismiss="modal">Close</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>-->
 </#macro>
+
+<#macro buyForm>
+<#--Buy-->
+    <form action="/films/${film.getId()}/buy" method="post">
+        <input type="hidden" name="_csrf" value="${_csrf.token}">
+        <div class="mb-3">
+            <select class="form-select" name="quality" required>
+                <option selected disabled>Качество</option>
+                <option value="1">SD</option>
+                <option value="2">MD</option>
+                <option value="3">HD</option>
+            </select>
+        </div>
+        <input type="submit" class="btn btn-primary" data-bs-dismiss="modal" value="Купить"/>
+    </form>
+</#macro>
+
+<#macro rentForm>
+<#--Rent-->
+    <form action="/films/${film.getId()}/rent" method="post">
+        <input type="hidden" name="_csrf" value="${_csrf.token}">
+        <div class="mb-3">
+            <select class="form-select" name="quality" required>
+                <option selected disabled>Качество</option>
+                <option value="1">SD</option>
+                <option value="2">MD</option>
+                <option value="3">HD</option>
+            </select>
+        </div>
+        <input type="submit" class="btn btn-primary" data-bs-dismiss="modal" value="Оплатить"/>
+    </form>
+</#macro>
+

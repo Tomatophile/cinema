@@ -16,7 +16,7 @@ public class FilmPageController {
 
     @GetMapping
     public String viewFilmPage(@PathVariable int id, Model model){
-        model.addAttribute("film", filmRepo.findById(id).get());
+        model.addAttribute("film", filmRepo.getOne(id));
         return "/film";
     }
 }

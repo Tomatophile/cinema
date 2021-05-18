@@ -15,6 +15,7 @@
     <body>
 
     <#include "navbar.ftlh">
+    <#include "security.ftlh">
 
     <#nested>
 
