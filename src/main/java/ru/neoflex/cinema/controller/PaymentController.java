@@ -13,10 +13,9 @@ import ru.neoflex.cinema.domain.composite.UserAndFilmCompositeId;
 import ru.neoflex.cinema.repos.*;
 
 import java.time.LocalDateTime;
-import java.util.Collections;
 
 @Controller
-public class PaymentPageController {
+public class PaymentController {
     @Autowired
     private FilmRepo filmRepo;
     @Autowired

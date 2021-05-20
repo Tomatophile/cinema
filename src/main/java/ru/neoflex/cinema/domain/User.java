@@ -110,6 +110,10 @@ public class User implements UserDetails {
         return birthday;
     }
 
+    public Integer getAge(){
+        return LocalDate.now().getYear()-birthday.getYear();
+    }
+
     public void setBirthday(LocalDate birthday) {
         this.birthday = birthday;
     }

@@ -8,8 +8,12 @@
              height="900">
     </div>
     <#if known>
-        <a class="btn btn-light text-dark btn-sm" href="/films/${film.getId()}/buy" role="button">Купить</a>
-        <a class="btn btn-light text-dark btn-sm" href="/films/${film.getId()}/rent" role="button">Арендовать</a>
+        <#if user.getAge() < film.getAgeLimit()>
+            <a class="btn btn-light text-dark btn-sm" href="/films/${film.getId()}/buy" role="button">Купить</a>
+            <a class="btn btn-light text-dark btn-sm" href="/films/${film.getId()}/rent" role="button">Арендовать</a>
+        <#else>
+            Возрастное ограничение ${film.getAgeLimit()}
+        </#if>
     <#else>
         <a class="btn btn-light text-dark btn-sm" href="/login" role="button">Купить</a>
         <a class="btn btn-light text-dark btn-sm" href="/login" role="button">Арендовать</a>
