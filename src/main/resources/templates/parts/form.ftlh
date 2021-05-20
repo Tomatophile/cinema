@@ -163,6 +163,15 @@
 <#--Buy-->
     <form action="/films/${film.getId()}/buy" method="post">
         <input type="hidden" name="_csrf" value="${_csrf.token}">
+            <div class="mb-3">
+                <select class="form-select" name="card" required>
+                    <option selected disabled>Карта</option>
+                    <#list cards as card>
+                        <option value="${card.getNumber()}">${card.getNumber()}</option>
+                    </#list>
+                </select>
+            </div>
+            <a href="/profile/card/new" class="btn btn-secondary btn-sm">Добавить карту</a>
         <div class="mb-3">
             <select class="form-select" name="quality" required>
                 <option selected disabled>Качество</option>
@@ -179,6 +188,17 @@
 <#--Rent-->
     <form action="/films/${film.getId()}/rent" method="post">
         <input type="hidden" name="_csrf" value="${_csrf.token}">
+            <div class="mb-3">
+                <select class="form-select" name="card" required>
+                    <option selected disabled>Карта</option>
+                    <#list cards as card>
+                        <option value="${card.getNumber()}">${card.getNumber()}</option>
+                    <#else>
+                        <option disabled>Нет</option>
+                    </#list>
+                </select>
+            </div>
+            <a href="/profile/card/new" class="btn btn-secondary btn-sm">Добавить карту</a>
         <div class="mb-3">
             <select class="form-select" name="quality" required>
                 <option selected disabled>Качество</option>

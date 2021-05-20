@@ -28,7 +28,8 @@ public class PaymentController {
     private VoucherRepo voucherRepo;
 
     @GetMapping("/films/{id}/buy")
-    public String viewBuyPage(@PathVariable int id, Model model){
+    public String viewBuyPage(@PathVariable int id, Model model, @AuthenticationPrincipal User user) {
+        model.addAttribute("cards", cardRepo.findAllByUser_Id(user.getId()));
         model.addAttribute("film", filmRepo.getOne(id));
         return "buyPage";
     }
@@ -38,7 +39,7 @@ public class PaymentController {
             @PathVariable int id,
             @AuthenticationPrincipal User user,
             @RequestParam int quality,
-            @RequestParam Card card){
+            @RequestParam String card) {
         BoughtFilm boughtFilm = new BoughtFilm();
         Film film = filmRepo.getOne(id);
         boughtFilm.setId(new UserAndFilmCompositeId(user.getId(), film.getId()));
@@ -46,7 +47,7 @@ public class PaymentController {
         boughtFilm.setQuality(quality);
         boughtFilm.setUser(user);
 
-        newVoucher(card, film, "Покупка");
+        newVoucher(card, film, "buy");
 
         boughtFilmRepo.save(boughtFilm);
 
@@ -54,7 +55,8 @@ public class PaymentController {
     }
 
     @GetMapping("/films/{id}/rent")
-    public String viewRentPage(@PathVariable int id, Model model){
+    public String viewRentPage(@PathVariable int id, Model model, @AuthenticationPrincipal User user) {
+        model.addAttribute("cards", cardRepo.findAllByUser_Id(user.getId()));
         model.addAttribute("film", filmRepo.getOne(id));
         return "rentPage";
     }
@@ -64,7 +66,7 @@ public class PaymentController {
             @PathVariable int id,
             @AuthenticationPrincipal User user,
             @RequestParam int quality,
-            @RequestParam Card card){
+            @RequestParam String card) {
         RentedFilm rentedFilm = new RentedFilm();
         Film film = filmRepo.getOne(id);
         rentedFilm.setId(new UserAndFilmCompositeId(user.getId(), film.getId()));
@@ -74,7 +76,7 @@ public class PaymentController {
         rentedFilm.setQuality(quality);
         rentedFilm.setUser(user);
 
-        newVoucher(card, film, "Аренда");
+        newVoucher(card, film, "rent");
 
         rentedFilmRepo.save(rentedFilm);
 
@@ -82,14 +84,14 @@ public class PaymentController {
     }
 
     @GetMapping("/profile/card/new")
-    public String newCardForm(){
+    public String newCardForm() {
         return "newCard";
     }
 
     @PostMapping("/profile/card/new")
-    public String newCardAdd(Card card, @AuthenticationPrincipal User user){
+    public String newCardAdd(Card card, @AuthenticationPrincipal User user) {
         Card cardFromDB = cardRepo.findByNumber(card.getNumber());
-        if(cardFromDB==null){
+        if (cardFromDB == null) {
             card.setUser(user);
         }
 
@@ -98,11 +100,11 @@ public class PaymentController {
         return "redirect:/profile";
     }
 
-    private void newVoucher(Card card, Film film, String type){
+    private void newVoucher(String card, Film film, String type) {
         Voucher voucher = new Voucher();
         voucher.setFilm(film);
         voucher.setPaymentType(type);
-        voucher.setCard(card);
+        voucher.setCard(cardRepo.findByNumber(card));
 
         voucherRepo.save(voucher);
     }

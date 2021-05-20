@@ -1,5 +1,7 @@
 package ru.neoflex.cinema.domain;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
 import javax.persistence.*;
 import java.io.Serializable;
 import java.time.LocalDate;
@@ -11,12 +13,13 @@ public class Card implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @ManyToOne(optional = false)
+    @ManyToOne(fetch = FetchType.EAGER, optional = false)
     @JoinColumn(name = "user_id")
     private User user;
     private String number;
     private String owner;
     @Column(name = "end_date")
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate endDate;
     @OneToMany(mappedBy = "card", cascade = CascadeType.REMOVE)
     private List<Voucher> vouchers;

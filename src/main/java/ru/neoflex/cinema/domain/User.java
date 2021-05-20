@@ -3,6 +3,7 @@ package ru.neoflex.cinema.domain;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.*;
 import java.time.LocalDate;
@@ -10,6 +11,7 @@ import java.util.*;
 
 @Entity
 @Table(name = "client")
+@Transactional
 public class User implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -28,7 +30,7 @@ public class User implements UserDetails {
     private List<RentedFilm> rentedFilms;
     @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
     private List<BoughtFilm> boughtFilms;
-    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
+    @ManyToMany(cascade = CascadeType.REMOVE)
     @JoinTable(name = "client_role",
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "role_id"))
@@ -125,6 +127,7 @@ public class User implements UserDetails {
     public void setGender(char gender) {
         this.gender = gender;
     }
+
 
     public List<Card> getCards() {
         return cards;
