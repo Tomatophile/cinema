@@ -18,8 +18,16 @@
     </div>
     <#if known>
         <#if user.getAge() gte film.getAgeLimit()>
-            <a class="btn btn-light text-dark btn-sm" href="/films/${film.getId()}/buy" role="button">Купить: ${film.getBuyPrice()}р</a>
-            <a class="btn btn-light text-dark btn-sm" href="/films/${film.getId()}/rent" role="button">Арендовать: ${film.getRentPrice()}р</a>
+            <#if bought>
+            <#else>
+                <a class="btn btn-light text-dark btn-sm" href="/films/${film.getId()}/buy"
+                   role="button">Купить: ${film.getBuyPrice()}р</a>
+                <#if rented>
+                <#else>
+                    <a class="btn btn-light text-dark btn-sm" href="/films/${film.getId()}/rent" role="button">Арендовать: ${film.getRentPrice()}
+                        р</a>
+                </#if>
+            </#if>
         <#else>
             Возрастное ограничение: ${film.getAgeLimit()}+
         </#if>

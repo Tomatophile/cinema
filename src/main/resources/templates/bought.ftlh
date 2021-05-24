@@ -1,9 +1,6 @@
 <#import "parts/common.ftlh" as c>
+<#import "parts/displayFilms.ftlh" as disp>
 
 <@c.html>
-    <#list boughtFilms as film>
-        ${film.getFilm().getName()}
-        ${film.getQuality()}
-        <br>
-    </#list>
+    <@disp.bought></@disp.bought>
 </@c.html>

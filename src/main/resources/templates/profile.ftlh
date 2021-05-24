@@ -1,9 +1,13 @@
 <#import "parts/common.ftlh" as c>
 
 <@c.html>
-    Id: ${user.getId()} <br>
-    Name : ${user.getNickname()}<br>
-    Email: ${user.getEmail()}<br>
-    Birthday: ${user.getBirthday()}<br>
-    Gender: ${user.getGender()}<br>
+    <div class="container text-white">
+        <br>
+        <br>
+        <p><b>${user.getNickname()}</b></p>
+        <p>${user.getEmail()}</p>
+        <p>${user.getBirthday()}</p>
+        <a class="btn btn-light text-dark btn-sm" href="/profile/own/bought" role="button">Купленные</a>
+        <a class="btn btn-light text-dark btn-sm" href="/profile/own/rented" role="button">Арендованные</a>
+    </div>
 </@c.html>

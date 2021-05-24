@@ -30,7 +30,7 @@ public class User implements UserDetails {
     private List<RentedFilm> rentedFilms;
     @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
     private List<BoughtFilm> boughtFilms;
-    @ManyToMany(cascade = CascadeType.REMOVE)
+    @ManyToMany(cascade = CascadeType.REMOVE, fetch = FetchType.EAGER)
     @JoinTable(name = "client_role",
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "role_id"))
